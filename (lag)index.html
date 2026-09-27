@@ -1,0 +1,2660 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genovaris Lifesciences | Health Solutions</title>
+    <meta name="description" content="Genovaris Lifesciences - Nutrition-focused products created to support everyday health, wellness and better living.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        navy: {
+                            900: '#020b18',
+                            800: '#0a1930',
+                            700: '#112240'
+                        },
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4'
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 15s linear infinite',
+                        'marquee': 'marquee 25s linear infinite'
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': {
+                                transform: 'translateX(0%)'
+                            },
+                            '100%': {
+                                transform: 'translateX(-100%)'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020b18;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        body.loading-locked {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        html {
+            scroll-padding-top: 100px;
+        }
+
+        .glass-panel {
+            background: rgba(10, 25, 48, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #22d3ee;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link.active-link::after {
+            width: 100%;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-text-clip {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+            transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .animate-hero .hero-text-clip {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+
+        /* DNA PRELOADER */
+
+        #preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background:
+                radial-gradient(
+                    circle at 50% 48%,
+                    rgba(34, 211, 238, 0.16) 0%,
+                    rgba(6, 75, 110, 0.16) 22%,
+                    rgba(7, 19, 33, 0.92) 58%,
+                    #020b18 100%
+                );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition:
+                opacity 0.7s cubic-bezier(0.77, 0, 0.175, 1),
+                visibility 0.7s ease;
+        }
+
+        #preloader::before {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            border-radius: 50%;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(34, 211, 238, 0.13) 0%,
+                    rgba(6, 182, 212, 0.07) 35%,
+                    transparent 70%
+                );
+            filter: blur(20px);
+            animation: dnaLoaderAura 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        #preloader::after {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 560px;
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(34, 211, 238, 0.025),
+                    transparent
+                );
+            transform: rotate(25deg);
+            filter: blur(25px);
+            pointer-events: none;
+        }
+
+        .dna-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        #dnaCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            filter:
+                drop-shadow(0 0 16px rgba(34, 211, 238, 0.45))
+                drop-shadow(0 0 40px rgba(6, 182, 212, 0.18));
+        }
+
+        @keyframes dnaLoaderAura {
+            0%,
+            100% {
+                transform: scale(0.92);
+                opacity: 0.55;
+            }
+
+            50% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 767px) {
+            #preloader::before {
+                width: 380px;
+                height: 380px;
+            }
+
+            #dnaCanvas {
+                filter:
+                    drop-shadow(0 0 13px rgba(34, 211, 238, 0.45))
+                    drop-shadow(0 0 30px rgba(6, 182, 212, 0.18));
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #preloader::before {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading-locked antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- DNA LOADER -->
+
+    <div id="preloader">
+        <div class="dna-container">
+            <canvas id="dnaCanvas" width="320" height="640"></canvas>
+        </div>
+    </div>
+
+
+    <!-- DNA LOADER ENGINE -->
+
+    <script>
+        (function initLoader() {
+
+            const canvas = document.getElementById('dnaCanvas');
+
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+
+            let width = 0;
+            let height = 0;
+            let time = 0;
+            let loaderActive = true;
+            let removed = false;
+
+
+            const resize = () => {
+
+                const dpr = Math.min(
+                    window.devicePixelRatio || 1,
+                    2
+                );
+
+                width = window.innerWidth;
+                height = window.innerHeight;
+
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+
+                ctx.setTransform(
+                    dpr,
+                    0,
+                    0,
+                    dpr,
+                    0,
+                    0
+                );
+            };
+
+
+            window.addEventListener(
+                'resize',
+                resize
+            );
+
+
+            resize();
+
+
+            function drawGlow(
+                x,
+                y,
+                radius,
+                alpha
+            ) {
+
+                const gradient =
+                    ctx.createRadialGradient(
+                        x,
+                        y,
+                        0,
+                        x,
+                        y,
+                        radius * 4
+                    );
+
+
+                gradient.addColorStop(
+                    0,
+                    `rgba(34, 211, 238, ${alpha})`
+                );
+
+
+                gradient.addColorStop(
+                    0.35,
+                    `rgba(6, 182, 212, ${alpha * 0.45})`
+                );
+
+
+                gradient.addColorStop(
+                    1,
+                    'rgba(6, 182, 212, 0)'
+                );
+
+
+                ctx.fillStyle = gradient;
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+                    x,
+                    y,
+                    radius * 4,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.fill();
+            }
+
+
+            function draw() {
+
+                if (!loaderActive) return;
+
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+
+                const isMobile =
+                    width < 768;
+
+
+                const dnaHeight =
+                    isMobile
+                        ? Math.min(
+                            height * 0.55,
+                            360
+                        )
+                        : Math.min(
+                            height * 0.62,
+                            520
+                        );
+
+
+                const radius =
+                    isMobile
+                        ? 55
+                        : 78;
+
+
+                const loops = 3;
+
+
+                const centerX =
+                    width / 2;
+
+
+                const centerY =
+                    height / 2;
+
+
+                const yStart =
+                    centerY -
+                    dnaHeight / 2;
+
+
+                const dotSpacing =
+                    isMobile
+                        ? 13
+                        : 14;
+
+
+                const elements = [];
+
+
+                /*
+                 * CENTRAL DNA GLOW
+                 */
+
+                const glowGradient =
+                    ctx.createRadialGradient(
+                        centerX,
+                        centerY,
+                        0,
+                        centerX,
+                        centerY,
+                        radius * 3
+                    );
+
+
+                glowGradient.addColorStop(
+                    0,
+                    'rgba(34, 211, 238, 0.08)'
+                );
+
+
+                glowGradient.addColorStop(
+                    0.45,
+                    'rgba(6, 182, 212, 0.035)'
+                );
+
+
+                glowGradient.addColorStop(
+                    1,
+                    'rgba(6, 182, 212, 0)'
+                );
+
+
+                ctx.fillStyle =
+                    glowGradient;
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+                    centerX,
+                    centerY,
+                    radius * 3,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.fill();
+
+
+                /*
+                 * CREATE DNA
+                 */
+
+                for (
+                    let y = 0;
+                    y <= dnaHeight;
+                    y += dotSpacing
+                ) {
+
+                    const progress =
+                        y / dnaHeight;
+
+
+                    const angle =
+                        progress *
+                        Math.PI *
+                        2 *
+                        loops +
+                        time;
+
+
+                    const x1 =
+                        centerX +
+                        Math.cos(angle) *
+                        radius;
+
+
+                    const z1 =
+                        Math.sin(angle) *
+                        radius;
+
+
+                    const x2 =
+                        centerX +
+                        Math.cos(
+                            angle + Math.PI
+                        ) *
+                        radius;
+
+
+                    const z2 =
+                        Math.sin(
+                            angle + Math.PI
+                        ) *
+                        radius;
+
+
+                    elements.push({
+                        type: 'dot',
+                        x: x1,
+                        y: yStart + y,
+                        z: z1,
+                        strand: 1
+                    });
+
+
+                    elements.push({
+                        type: 'dot',
+                        x: x2,
+                        y: yStart + y,
+                        z: z2,
+                        strand: 2
+                    });
+
+
+                    elements.push({
+                        type: 'rung',
+                        x1: x1,
+                        x2: x2,
+                        y: yStart + y,
+                        z: (z1 + z2) / 2
+                    });
+                }
+
+
+                /*
+                 * DEPTH SORT
+                 */
+
+                elements.sort(
+                    (a, b) => a.z - b.z
+                );
+
+
+                /*
+                 * RENDER
+                 */
+
+                elements.forEach(el => {
+
+
+                    /*
+                     * DNA NODES
+                     */
+
+                    if (el.type === 'dot') {
+
+                        const depth =
+                            (el.z + radius) /
+                            (radius * 2);
+
+
+                        const size =
+                            2.8 +
+                            depth * 4.2;
+
+
+                        const alpha =
+                            0.38 +
+                            depth * 0.62;
+
+
+                        drawGlow(
+                            el.x,
+                            el.y,
+                            size,
+                            0.045 +
+                            depth * 0.07
+                        );
+
+
+                        ctx.save();
+
+
+                        ctx.shadowColor =
+                            '#22d3ee';
+
+
+                        ctx.shadowBlur =
+                            12 +
+                            depth * 16;
+
+
+                        const nodeGradient =
+                            ctx.createRadialGradient(
+                                el.x - size * 0.3,
+                                el.y - size * 0.3,
+                                0,
+                                el.x,
+                                el.y,
+                                size
+                            );
+
+
+                        nodeGradient.addColorStop(
+                            0,
+                            `rgba(224, 252, 255, ${alpha})`
+                        );
+
+
+                        nodeGradient.addColorStop(
+                            0.25,
+                            `rgba(103, 232, 249, ${alpha})`
+                        );
+
+
+                        nodeGradient.addColorStop(
+                            0.7,
+                            `rgba(34, 211, 238, ${alpha})`
+                        );
+
+
+                        nodeGradient.addColorStop(
+                            1,
+                            `rgba(6, 182, 212, ${alpha * 0.8})`
+                        );
+
+
+                        ctx.fillStyle =
+                            nodeGradient;
+
+
+                        ctx.beginPath();
+
+
+                        ctx.arc(
+                            el.x,
+                            el.y,
+                            size,
+                            0,
+                            Math.PI * 2
+                        );
+
+
+                        ctx.fill();
+
+
+                        /*
+                         * NODE HIGHLIGHT
+                         */
+
+                        ctx.shadowBlur = 0;
+
+
+                        ctx.fillStyle =
+                            `rgba(255,255,255,${0.35 + depth * 0.4})`;
+
+
+                        ctx.beginPath();
+
+
+                        ctx.arc(
+                            el.x - size * 0.28,
+                            el.y - size * 0.28,
+                            size * 0.25,
+                            0,
+                            Math.PI * 2
+                        );
+
+
+                        ctx.fill();
+
+
+                        ctx.restore();
+
+
+                    }
+
+
+                    /*
+                     * DNA RUNG
+                     */
+
+                    else if (
+                        el.type === 'rung'
+                    ) {
+
+                        const depth =
+                            (el.z + radius) /
+                            (radius * 2);
+
+
+                        ctx.save();
+
+
+                        const alpha =
+                            0.18 +
+                            depth * 0.52;
+
+
+                        ctx.strokeStyle =
+                            `rgba(103, 232, 249, ${alpha})`;
+
+
+                        ctx.lineWidth =
+                            1.5 +
+                            depth * 1.2;
+
+
+                        ctx.lineCap =
+                            'round';
+
+
+                        ctx.shadowColor =
+                            '#06b6d4';
+
+
+                        ctx.shadowBlur =
+                            5 +
+                            depth * 8;
+
+
+                        ctx.beginPath();
+
+
+                        ctx.moveTo(
+                            el.x1,
+                            el.y
+                        );
+
+
+                        ctx.lineTo(
+                            el.x2,
+                            el.y
+                        );
+
+
+                        ctx.stroke();
+
+
+                        /*
+                         * RUNG HIGHLIGHT
+                         */
+
+                        ctx.shadowBlur = 0;
+
+
+                        ctx.strokeStyle =
+                            `rgba(255,255,255,${0.08 + depth * 0.12})`;
+
+
+                        ctx.lineWidth = 0.7;
+
+
+                        ctx.beginPath();
+
+
+                        ctx.moveTo(
+                            el.x1,
+                            el.y
+                        );
+
+
+                        ctx.lineTo(
+                            el.x2,
+                            el.y
+                        );
+
+
+                        ctx.stroke();
+
+
+                        ctx.restore();
+                    }
+
+                });
+
+
+                /*
+                 * ROTATION
+                 */
+
+                time += 0.024;
+
+
+                requestAnimationFrame(draw);
+            }
+
+
+            /*
+             * START
+             */
+
+            requestAnimationFrame(draw);
+
+
+            /*
+             * SAFE LOADER REMOVAL
+             */
+
+            window.removeLoaderSafely =
+                () => {
+
+                    if (removed) return;
+
+                    removed = true;
+
+
+                    const loader =
+                        document.getElementById(
+                            'preloader'
+                        );
+
+
+                    if (!loader) return;
+
+
+                    loader.style.opacity =
+                        '0';
+
+
+                    setTimeout(() => {
+
+                        loader.style.visibility =
+                            'hidden';
+
+
+                        loader.style.display =
+                            'none';
+
+
+                        loaderActive =
+                            false;
+
+
+                        document.body.classList.remove(
+                            'loading-locked'
+                        );
+
+
+                        const heroContent =
+                            document.getElementById(
+                                'hero-content'
+                            );
+
+
+                        if (heroContent) {
+
+                            heroContent.classList.add(
+                                'animate-hero'
+                            );
+
+                        }
+
+                    }, 700);
+                };
+
+
+            /*
+             * MAXIMUM 3 SECONDS
+             */
+
+            setTimeout(
+                window.removeLoaderSafely,
+                3000
+            );
+
+
+            /*
+             * PAGE LOAD
+             */
+
+            window.addEventListener(
+                'load',
+                () => {
+
+                    setTimeout(
+                        window.removeLoaderSafely,
+                        2600
+                    );
+
+                }
+            );
+
+        })();
+    </script>
+
+
+    <!-- NAVIGATION -->
+
+    <header
+        id="main-header"
+        class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-4 border-b border-transparent"
+    >
+
+        <div
+            class="max-w-7xl mx-auto px-6 flex justify-between items-center"
+        >
+
+            <a
+                href="#"
+                class="text-2xl font-bold tracking-wider text-white"
+            >
+                GEN<span class="text-cyan-400">OVARIS</span>
+            </a>
+
+
+            <nav
+                class="hidden lg:flex items-center space-x-8 text-sm font-medium tracking-wide"
+            >
+
+                <a
+                    href="#about"
+                    class="nav-link scroll-link text-white/80 hover:text-cyan-400 transition-colors"
+                >
+                    ABOUT
+                </a>
+
+
+                <div class="group relative">
+
+                    <a
+                        href="#products"
+                        class="nav-link scroll-link text-white/80 hover:text-cyan-400 transition-colors flex items-center gap-1 py-2"
+                    >
+                        PRODUCTS
+
+                        <i
+                            data-lucide="chevron-down"
+                            class="w-4 h-4 opacity-50"
+                        ></i>
+                    </a>
+
+
+                    <div
+                        class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[600px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100"
+                    >
+
+                        <div
+                            class="glass-panel rounded-xl p-6 shadow-2xl grid grid-cols-2 gap-6"
+                        >
+
+                            <a
+                                href="#product-bonebro"
+                                class="block p-4 rounded-lg hover:bg-white/5 transition-colors"
+                            >
+                                <h4 class="text-cyan-400 font-semibold mb-1">
+                                    BONEBRO
+                                </h4>
+
+                                <p class="text-xs text-white/60">
+                                    Bone and nutritional support with Calcium & D3.
+                                </p>
+                            </a>
+
+
+                            <a
+                                href="#product-redxt"
+                                class="block p-4 rounded-lg hover:bg-white/5 transition-colors"
+                            >
+                                <h4 class="text-cyan-400 font-semibold mb-1">
+                                    RED-XT
+                                </h4>
+
+                                <p class="text-xs text-white/60">
+                                    Iron and micronutrient nutritional support.
+                                </p>
+                            </a>
+
+
+                            <a
+                                href="#product-cerebracb"
+                                class="block p-4 rounded-lg hover:bg-white/5 transition-colors"
+                            >
+                                <h4 class="text-cyan-400 font-semibold mb-1">
+                                    CEREBRA-CB
+                                </h4>
+
+                                <p class="text-xs text-white/60">
+                                    Cognitive and general nutritional support.
+                                </p>
+                            </a>
+
+
+                            <a
+                                href="#product-protizenhp"
+                                class="block p-4 rounded-lg hover:bg-white/5 transition-colors"
+                            >
+                                <h4 class="text-cyan-400 font-semibold mb-1">
+                                    PROTIZEN-HP
+                                </h4>
+
+                                <p class="text-xs text-white/60">
+                                    Protein and daily recovery nutrition.
+                                </p>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="#focus"
+                    class="nav-link scroll-link text-white/80 hover:text-cyan-400 transition-colors"
+                >
+                    OUR FOCUS
+                </a>
+
+
+                <a
+                    href="#quality"
+                    class="nav-link scroll-link text-white/80 hover:text-cyan-400 transition-colors"
+                >
+                    QUALITY
+                </a>
+
+
+                <a
+                    href="#contact"
+                    class="nav-link scroll-link text-white/80 hover:text-cyan-400 transition-colors"
+                >
+                    CONTACT
+                </a>
+
+
+                <a
+                    href="#contact"
+                    class="px-5 py-2 bg-white/10 hover:bg-cyan-500 hover:text-navy-900 border border-white/20 hover:border-transparent rounded-full transition-all duration-300"
+                >
+                    ENQUIRE
+                </a>
+
+            </nav>
+
+
+            <button
+                id="mobile-menu-btn"
+                class="lg:hidden text-white p-2 focus:outline-none"
+            >
+                <i
+                    data-lucide="menu"
+                    class="w-6 h-6"
+                ></i>
+            </button>
+
+        </div>
+
+
+        <div
+            id="mobile-inline-nav"
+            class="lg:hidden w-full overflow-x-auto hide-scrollbar px-6 pt-2 pb-1 border-t border-white/5 mt-2 hidden transition-all"
+        >
+
+            <div
+                class="flex space-x-6 w-max text-xs font-semibold tracking-wider"
+            >
+
+                <a
+                    href="#products"
+                    class="scroll-link text-white/70 hover:text-cyan-400 py-1 transition-colors whitespace-nowrap"
+                >
+                    PRODUCTS
+                </a>
+
+                <a
+                    href="#focus"
+                    class="scroll-link text-white/70 hover:text-cyan-400 py-1 transition-colors whitespace-nowrap"
+                >
+                    OUR FOCUS
+                </a>
+
+                <a
+                    href="#quality"
+                    class="scroll-link text-white/70 hover:text-cyan-400 py-1 transition-colors whitespace-nowrap"
+                >
+                    QUALITY
+                </a>
+
+                <a
+                    href="#contact"
+                    class="scroll-link text-white/70 hover:text-cyan-400 py-1 transition-colors whitespace-nowrap"
+                >
+                    CONTACT
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- MOBILE MENU -->
+
+    <div
+        id="mobile-menu-overlay"
+        class="fixed inset-0 bg-navy-900/95 backdrop-blur-xl z-[60] flex flex-col justify-center px-8 opacity-0 pointer-events-none transition-opacity duration-300"
+    >
+
+        <button
+            id="close-menu-btn"
+            class="absolute top-6 right-6 text-white/70 hover:text-white"
+        >
+            <i
+                data-lucide="x"
+                class="w-8 h-8"
+            ></i>
+        </button>
+
+
+        <nav
+            class="flex flex-col space-y-6 text-2xl font-light tracking-wide"
+        >
+
+            <a
+                href="#about"
+                class="mobile-link text-white hover:text-cyan-400 transition-colors"
+            >
+                About Us
+            </a>
+
+            <a
+                href="#products"
+                class="mobile-link text-white hover:text-cyan-400 transition-colors"
+            >
+                Our Products
+            </a>
+
+            <a
+                href="#focus"
+                class="mobile-link text-white hover:text-cyan-400 transition-colors"
+            >
+                Our Focus
+            </a>
+
+            <a
+                href="#quality"
+                class="mobile-link text-white hover:text-cyan-400 transition-colors"
+            >
+                Quality
+            </a>
+
+            <a
+                href="#contact"
+                class="mobile-link text-white hover:text-cyan-400 transition-colors"
+            >
+                Contact
+            </a>
+
+        </nav>
+
+
+        <div class="mt-12">
+
+            <p class="text-sm text-white/40 mb-2">
+                CORPORATE OFFICE
+            </p>
+
+            <p class="text-white/80 text-sm">
+                Ranchi, Jharkhand, India
+            </p>
+
+            <a
+                href="tel:8102946105"
+                class="block text-cyan-400 mt-2 text-sm"
+            >
+                8102946105
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- HERO -->
+
+    <section
+        class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+    >
+
+        <div
+            class="absolute inset-0 z-0 opacity-20 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"
+        ></div>
+
+
+        <div
+            class="absolute top-1/4 -right-1/4 w-[800px] h-[800px] bg-cyan-900/30 rounded-full blur-[120px] mix-blend-screen pointer-events-none"
+        ></div>
+
+
+        <div
+            class="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-blue-900/30 rounded-full blur-[100px] mix-blend-screen pointer-events-none"
+        ></div>
+
+
+        <div
+            id="hero-content"
+            class="relative z-10 text-center max-w-4xl mx-auto px-6"
+        >
+
+            <div
+                class="hero-text-clip overflow-hidden mb-4"
+            >
+
+                <span
+                    class="block text-cyan-400 tracking-[0.2em] text-sm md:text-base font-semibold mb-4"
+                >
+                    GENOVARIS LIFESCIENCES
+                </span>
+
+            </div>
+
+
+            <div class="hero-text-clip overflow-hidden">
+
+                <h1
+                    class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-2 text-white"
+                >
+                    Health solutions
+                </h1>
+
+            </div>
+
+
+            <div class="hero-text-clip overflow-hidden">
+
+                <h1
+                    class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 text-white/90"
+                >
+                    designed around<br>
+                    better living.
+                </h1>
+
+            </div>
+
+
+            <div
+                class="hero-text-clip overflow-hidden max-w-2xl mx-auto"
+            >
+
+                <p
+                    class="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-10"
+                >
+                    Nutrition-focused products created to support everyday health, wellness and normal physiological function.
+                </p>
+
+            </div>
+
+
+            <div
+                class="hero-text-clip overflow-hidden flex flex-col sm:flex-row justify-center gap-4"
+            >
+
+                <a
+                    href="#products"
+                    class="px-8 py-4 bg-white text-navy-900 rounded-full font-semibold hover:bg-cyan-50 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                >
+                    Explore Products
+                </a>
+
+
+                <a
+                    href="#approach"
+                    class="px-8 py-4 bg-transparent border border-white/20 text-white rounded-full font-semibold hover:bg-white/5 transition-colors"
+                >
+                    Our Approach
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BRAND TICKER -->
+
+    <div
+        class="w-full bg-cyan-500/10 border-y border-cyan-500/20 py-4 overflow-hidden relative"
+    >
+
+        <div
+            class="flex whitespace-nowrap animate-marquee"
+        >
+
+            <div
+                class="flex items-center shrink-0 min-w-full justify-around space-x-12 px-6"
+            >
+
+                <span class="text-cyan-400 font-semibold tracking-widest text-sm uppercase">
+                    Genovaris Lifesciences
+                </span>
+
+                <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+
+                <span class="text-white/70 tracking-widest text-sm uppercase">
+                    Nutrition
+                </span>
+
+                <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+
+                <span class="text-white/70 tracking-widest text-sm uppercase">
+                    Wellness
+                </span>
+
+                <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+
+                <span class="text-white/70 tracking-widest text-sm uppercase">
+                    Health Support
+                </span>
+
+                <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+
+            </div>
+
+
+            <div
+                class="flex items-center shrink-0 min-w-full justify-around space-x-12 px-6"
+            >
+
+                <span class="text-cyan-400 font-semibold tracking-widest text-sm uppercase">
+                    Genovaris Lifesciences
+                </span>
+
+                <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+
+                <span class="text-white/70 tracking-widest text-sm uppercase">
+                    Nutrition
+                </span>
+
+                <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+
+                <span class="text-white/70 tracking-widest text-sm uppercase">
+                    Wellness
+                </span>
+
+                <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+
+                <span class="text-white/70 tracking-widest text-sm uppercase">
+                    Health Support
+                </span>
+
+                <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ABOUT -->
+
+    <section
+        id="about"
+        class="py-24 md:py-32 relative overflow-hidden"
+    >
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div
+                class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+            >
+
+                <div class="reveal">
+
+                    <h2
+                        class="text-sm text-cyan-400 font-semibold tracking-widest mb-4"
+                    >
+                        ABOUT GENOVARIS
+                    </h2>
+
+                    <h3
+                        class="text-4xl md:text-5xl font-bold leading-tight mb-6"
+                    >
+                        Focused on better everyday health.
+                    </h3>
+
+                </div>
+
+
+                <div class="reveal delay-100">
+
+                    <p
+                        class="text-lg text-white/70 leading-relaxed font-light mb-6"
+                    >
+                        Genovaris Lifesciences is an India-based healthcare and wellness company dedicated to providing premium nutritional support.
+                    </p>
+
+
+                    <p
+                        class="text-lg text-white/70 leading-relaxed font-light"
+                    >
+                        Operating from Ranchi, Jharkhand, our approach combines modern scientific understanding with high-quality ingredients to formulate products that support your body's normal physiological functions and daily well-being.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOCUS -->
+
+    <section
+        id="focus"
+        class="py-24 bg-navy-800/50 border-y border-white/5 relative"
+    >
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div class="reveal mb-16">
+
+                <h2
+                    class="text-sm text-cyan-400 font-semibold tracking-widest mb-2 text-center"
+                >
+                    OUR FOCUS
+                </h2>
+
+                <h3
+                    class="text-3xl md:text-4xl font-bold text-center"
+                >
+                    Areas of Nutritional Support
+                </h3>
+
+            </div>
+
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+
+                <div
+                    class="glass-panel p-8 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal"
+                >
+
+                    <div
+                        class="text-cyan-400/20 text-5xl font-light absolute top-6 right-6 font-mono group-hover:text-cyan-400/40 transition-colors"
+                    >
+                        01
+                    </div>
+
+                    <i
+                        data-lucide="activity"
+                        class="w-8 h-8 text-cyan-400 mb-6"
+                    ></i>
+
+                    <h4 class="text-xl font-semibold mb-3">
+                        Bone Health
+                    </h4>
+
+                    <p class="text-sm text-white/60 leading-relaxed">
+                        Calcium, D3, and mineral support formulated for normal bone maintenance.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="glass-panel p-8 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal delay-100"
+                >
+
+                    <div
+                        class="text-cyan-400/20 text-5xl font-light absolute top-6 right-6 font-mono group-hover:text-cyan-400/40 transition-colors"
+                    >
+                        02
+                    </div>
+
+                    <i
+                        data-lucide="droplet"
+                        class="w-8 h-8 text-cyan-400 mb-6"
+                    ></i>
+
+                    <h4 class="text-xl font-semibold mb-3">
+                        Iron & Blood
+                    </h4>
+
+                    <p class="text-sm text-white/60 leading-relaxed">
+                        Ferrous Ascorbate and B-vitamins supporting normal red blood cell formation.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="glass-panel p-8 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal delay-200"
+                >
+
+                    <div
+                        class="text-cyan-400/20 text-5xl font-light absolute top-6 right-6 font-mono group-hover:text-cyan-400/40 transition-colors"
+                    >
+                        03
+                    </div>
+
+                    <i
+                        data-lucide="brain"
+                        class="w-8 h-8 text-cyan-400 mb-6"
+                    ></i>
+
+                    <h4 class="text-xl font-semibold mb-3">
+                        Cognitive Nutrition
+                    </h4>
+
+                    <p class="text-sm text-white/60 leading-relaxed">
+                        Omega-3 and specialized nutrients for general cognitive support.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="glass-panel p-8 rounded-2xl group hover:-translate-y-2 transition-transform duration-300 reveal delay-300"
+                >
+
+                    <div
+                        class="text-cyan-400/20 text-5xl font-light absolute top-6 right-6 font-mono group-hover:text-cyan-400/40 transition-colors"
+                    >
+                        04
+                    </div>
+
+                    <i
+                        data-lucide="shield"
+                        class="w-8 h-8 text-cyan-400 mb-6"
+                    ></i>
+
+                    <h4 class="text-xl font-semibold mb-3">
+                        Daily Nutrition
+                    </h4>
+
+                    <p class="text-sm text-white/60 leading-relaxed">
+                        Protein and micronutrient profiles designed for recovery and daily health.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUCTS -->
+
+    <section
+        id="products"
+        class="pt-32 pb-16"
+    >
+
+        <div
+            class="max-w-7xl mx-auto px-6 reveal"
+        >
+
+            <h2
+                class="text-sm text-cyan-400 font-semibold tracking-widest mb-2"
+            >
+                PRODUCT PORTFOLIO
+            </h2>
+
+            <h3
+                class="text-4xl md:text-5xl font-bold mb-24"
+            >
+                Formulated for Wellness.
+            </h3>
+
+        </div>
+
+
+        <!-- BONEBRO -->
+
+        <div
+            id="product-bonebro"
+            class="max-w-7xl mx-auto px-6 mb-32 reveal"
+        >
+
+            <div
+                class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+            >
+
+                <div
+                    class="lg:col-span-5 order-2 lg:order-1"
+                >
+
+                    <div
+                        class="text-cyan-400/30 text-8xl font-bold mb-4 -ml-2 font-mono"
+                    >
+                        01
+                    </div>
+
+                    <h4
+                        class="text-4xl font-bold tracking-tight mb-2"
+                    >
+                        BONEBRO
+                    </h4>
+
+                    <p
+                        class="text-xl text-cyan-400 mb-6 font-light"
+                    >
+                        Bone & Nutritional Support
+                    </p>
+
+
+                    <div class="space-y-4 mb-8">
+
+                        <div
+                            class="border-l-2 border-white/20 pl-4 py-1"
+                        >
+
+                            <span
+                                class="block text-xs text-white/50 tracking-wider mb-1"
+                            >
+                                KEY INGREDIENTS
+                            </span>
+
+                            <span
+                                class="block text-sm text-white/90"
+                            >
+                                Calcium, Vitamin K2-7, Zinc, Magnesium, Vitamin D3
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <p
+                        class="text-white/70 font-light leading-relaxed mb-8"
+                    >
+                        A specialized formula designed to support normal bone health. BONEBRO provides essential calcium nutritional support alongside crucial vitamins and minerals that assist in the body's natural maintenance processes.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="lg:col-span-7 order-1 lg:order-2"
+                >
+
+                    <div
+                        class="relative w-full aspect-[4/3] rounded-3xl overflow-hidden glass-panel group"
+                    >
+
+                        <div
+                            class="absolute inset-0 bg-gradient-to-tr from-navy-800 to-cyan-900/40"
+                        ></div>
+
+                        <img
+                            src="assets/bonebro.jpg"
+                            alt="Bonebro Product"
+                            class="absolute inset-0 w-full h-full object-contain p-8 mix-blend-screen opacity-90 group-hover:scale-105 transition-transform duration-700"
+                            onerror="this.style.display='none'"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RED-XT -->
+
+        <div
+            id="product-redxt"
+            class="max-w-7xl mx-auto px-6 mb-32 reveal"
+        >
+
+            <div
+                class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+            >
+
+                <div
+                    class="lg:col-span-7 order-1"
+                >
+
+                    <div
+                        class="relative w-full aspect-[4/3] rounded-3xl overflow-hidden glass-panel group"
+                    >
+
+                        <div
+                            class="absolute inset-0 bg-gradient-to-tr from-navy-800 to-red-900/30"
+                        ></div>
+
+                        <img
+                            src="assets/red-xt.jpg"
+                            alt="Red-XT Product"
+                            class="absolute inset-0 w-full h-full object-contain p-8 mix-blend-screen opacity-90 group-hover:scale-105 transition-transform duration-700"
+                            onerror="this.style.display='none'"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="lg:col-span-5 order-2"
+                >
+
+                    <div
+                        class="text-cyan-400/30 text-8xl font-bold mb-4 -ml-2 font-mono"
+                    >
+                        02
+                    </div>
+
+                    <h4
+                        class="text-4xl font-bold tracking-tight mb-2"
+                    >
+                        RED-XT
+                    </h4>
+
+                    <p
+                        class="text-xl text-cyan-400 mb-6 font-light"
+                    >
+                        Iron & Micronutrient Support
+                    </p>
+
+
+                    <div class="space-y-4 mb-8">
+
+                        <div
+                            class="border-l-2 border-white/20 pl-4 py-1"
+                        >
+
+                            <span
+                                class="block text-xs text-white/50 tracking-wider mb-1"
+                            >
+                                KEY INGREDIENTS
+                            </span>
+
+                            <span
+                                class="block text-sm text-white/90"
+                            >
+                                Ferrous Ascorbate, Folic Acid, Cyanocobalamin, Pyridoxine, Vitamin D3
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <p
+                        class="text-white/70 font-light leading-relaxed mb-8"
+                    >
+                        Comprehensive iron nutrition. RED-XT combines highly absorbable iron forms with folate and Vitamin B12, providing essential nutritional support related to normal red blood cell formation.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CEREBRA-CB -->
+
+        <div
+            id="product-cerebracb"
+            class="max-w-7xl mx-auto px-6 mb-32 reveal"
+        >
+
+            <div
+                class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+            >
+
+                <div
+                    class="lg:col-span-5 order-2 lg:order-1"
+                >
+
+                    <div
+                        class="text-cyan-400/30 text-8xl font-bold mb-4 -ml-2 font-mono"
+                    >
+                        03
+                    </div>
+
+                    <h4
+                        class="text-4xl font-bold tracking-tight mb-2"
+                    >
+                        CEREBRA-CB
+                    </h4>
+
+                    <p
+                        class="text-xl text-cyan-400 mb-6 font-light"
+                    >
+                        Cognitive Nutritional Support
+                    </p>
+
+
+                    <div class="space-y-4 mb-8">
+
+                        <div
+                            class="border-l-2 border-white/20 pl-4 py-1"
+                        >
+
+                            <span
+                                class="block text-xs text-white/50 tracking-wider mb-1"
+                            >
+                                KEY INGREDIENTS
+                            </span>
+
+                            <span
+                                class="block text-sm text-white/90"
+                            >
+                                Cerebroprotein, Omega-3, Vitamin E, Vitamin D3, Vitamin B12
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <p
+                        class="text-white/70 font-light leading-relaxed mb-8"
+                    >
+                        Targeted neuro-nutritional support. Formulated with Omega-3 and essential vitamins to support general cognitive function and overall nervous system health as part of a balanced lifestyle.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="lg:col-span-7 order-1 lg:order-2"
+                >
+
+                    <div
+                        class="relative w-full aspect-[4/3] rounded-3xl overflow-hidden glass-panel group"
+                    >
+
+                        <div
+                            class="absolute inset-0 bg-gradient-to-tr from-navy-800 to-purple-900/30"
+                        ></div>
+
+                        <img
+                            src="assets/cerebra-cb.jpg"
+                            alt="Cerebra-CB Product"
+                            class="absolute inset-0 w-full h-full object-contain p-8 mix-blend-screen opacity-90 group-hover:scale-105 transition-transform duration-700"
+                            onerror="this.style.display='none'"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROTIZEN-HP -->
+
+        <div
+            id="product-protizenhp"
+            class="max-w-7xl mx-auto px-6 reveal"
+        >
+
+            <div
+                class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+            >
+
+                <div
+                    class="lg:col-span-7 order-1"
+                >
+
+                    <div
+                        class="relative w-full aspect-[4/3] rounded-3xl overflow-hidden glass-panel group"
+                    >
+
+                        <div
+                            class="absolute inset-0 bg-gradient-to-tr from-navy-800 to-green-900/30"
+                        ></div>
+
+                        <img
+                            src="assets/protizen-hp.jpg"
+                            alt="Protizen-HP Product"
+                            class="absolute inset-0 w-full h-full object-contain p-8 mix-blend-screen opacity-90 group-hover:scale-105 transition-transform duration-700"
+                            onerror="this.style.display='none'"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="lg:col-span-5 order-2"
+                >
+
+                    <div
+                        class="text-cyan-400/30 text-8xl font-bold mb-4 -ml-2 font-mono"
+                    >
+                        04
+                    </div>
+
+                    <h4
+                        class="text-4xl font-bold tracking-tight mb-2"
+                    >
+                        PROTIZEN-HP
+                    </h4>
+
+                    <p
+                        class="text-xl text-cyan-400 mb-6 font-light"
+                    >
+                        Protein & Daily Nutrition
+                    </p>
+
+
+                    <div class="space-y-4 mb-8">
+
+                        <div
+                            class="border-l-2 border-white/20 pl-4 py-1"
+                        >
+
+                            <span
+                                class="block text-xs text-white/50 tracking-wider mb-1"
+                            >
+                                KEY FOCUS
+                            </span>
+
+                            <span
+                                class="block text-sm text-white/90"
+                            >
+                                High-quality protein profile & balanced micronutrients
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <p
+                        class="text-white/70 font-light leading-relaxed mb-8"
+                    >
+                        Comprehensive daily nutritional support. Protizen-HP provides essential protein nutrition necessary for muscle support and overall recovery, ideal for maintaining an active and healthy life.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUALITY -->
+
+    <section
+        id="quality"
+        class="py-24 bg-navy-800/30 border-y border-white/5"
+    >
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div
+                class="text-center max-w-2xl mx-auto mb-16 reveal"
+            >
+
+                <h2
+                    class="text-sm text-cyan-400 font-semibold tracking-widest mb-2"
+                >
+                    QUALITY ASSURANCE
+                </h2>
+
+                <h3
+                    class="text-3xl md:text-4xl font-bold mb-4"
+                >
+                    Transparency & Compliance
+                </h3>
+
+                <p class="text-white/60 font-light">
+                    As a registered corporate entity in India, Genovaris Lifesciences strictly adheres to national regulatory frameworks.
+                </p>
+
+            </div>
+
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto reveal delay-100"
+            >
+
+                <div
+                    class="glass-panel p-6 rounded-2xl flex items-start gap-4"
+                >
+
+                    <div
+                        class="p-3 bg-white/5 rounded-lg text-cyan-400"
+                    >
+                        <i
+                            data-lucide="file-check-2"
+                            class="w-6 h-6"
+                        ></i>
+                    </div>
+
+
+                    <div>
+
+                        <h4 class="font-semibold text-lg mb-1">
+                            FSSAI Registration
+                        </h4>
+
+                        <p
+                            class="text-cyan-400 font-mono text-sm mb-2"
+                        >
+                            21126016000816
+                        </p>
+
+                        <p
+                            class="text-xs text-white/50 leading-relaxed"
+                        >
+                            Registered compliant with the Food Safety and Standards Authority of India for nutritional products.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="glass-panel p-6 rounded-2xl flex items-start gap-4"
+                >
+
+                    <div
+                        class="p-3 bg-white/5 rounded-lg text-cyan-400"
+                    >
+                        <i
+                            data-lucide="building-2"
+                            class="w-6 h-6"
+                        ></i>
+                    </div>
+
+
+                    <div>
+
+                        <h4 class="font-semibold text-lg mb-1">
+                            GST Registration
+                        </h4>
+
+                        <p
+                            class="text-cyan-400 font-mono text-sm mb-2"
+                        >
+                            20AMDPA2242F2Z2
+                        </p>
+
+                        <p
+                            class="text-xs text-white/50 leading-relaxed"
+                        >
+                            Official corporate tax registration validating our authorized business operations in Jharkhand.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer
+        id="contact"
+        class="bg-navy-900 pt-24 pb-12 border-t border-white/10"
+    >
+
+        <div class="max-w-7xl mx-auto px-6">
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16"
+            >
+
+                <div class="lg:col-span-1 reveal">
+
+                    <a
+                        href="#"
+                        class="text-2xl font-bold tracking-wider text-white mb-6 block"
+                    >
+                        GEN<span class="text-cyan-400">OVARIS</span>
+                    </a>
+
+                    <p
+                        class="text-sm text-white/60 leading-relaxed font-light mb-6"
+                    >
+                        Dedicated to providing premium, science-backed nutritional solutions to support everyday health and wellness.
+                    </p>
+
+                </div>
+
+
+                <div class="reveal delay-100">
+
+                    <h4
+                        class="text-white font-semibold mb-6 tracking-wider text-sm"
+                    >
+                        EXPLORE
+                    </h4>
+
+                    <ul
+                        class="space-y-3 text-sm text-white/60"
+                    >
+
+                        <li>
+                            <a
+                                href="#about"
+                                class="hover:text-cyan-400 transition-colors"
+                            >
+                                About Us
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="#products"
+                                class="hover:text-cyan-400 transition-colors"
+                            >
+                                Products
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="#focus"
+                                class="hover:text-cyan-400 transition-colors"
+                            >
+                                Our Focus
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="#quality"
+                                class="hover:text-cyan-400 transition-colors"
+                            >
+                                Quality
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="reveal delay-200">
+
+                    <h4
+                        class="text-white font-semibold mb-6 tracking-wider text-sm"
+                    >
+                        PORTFOLIO
+                    </h4>
+
+                    <ul
+                        class="space-y-3 text-sm text-white/60"
+                    >
+
+                        <li>
+                            <a
+                                href="#product-bonebro"
+                                class="hover:text-cyan-400 transition-colors"
+                            >
+                                Bonebro
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="#product-redxt"
+                                class="hover:text-cyan-400 transition-colors"
+                            >
+                                Red-XT
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="#product-cerebracb"
+                                class="hover:text-cyan-400 transition-colors"
+                            >
+                                Cerebra-CB
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="#product-protizenhp"
+                                class="hover:text-cyan-400 transition-colors"
+                            >
+                                Protizen-HP
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="reveal delay-300">
+
+                    <h4
+                        class="text-white font-semibold mb-6 tracking-wider text-sm"
+                    >
+                        CORPORATE OFFICE
+                    </h4>
+
+
+                    <address
+                        class="not-italic text-sm text-white/60 space-y-4 font-light"
+                    >
+
+                        <div
+                            class="flex items-start gap-3"
+                        >
+
+                            <i
+                                data-lucide="map-pin"
+                                class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"
+                            ></i>
+
+                            <p>
+                                3A, Third Floor, Aparajita Apt.<br>
+                                Dhobi Ghat Road, Lalpur<br>
+                                Ranchi, Jharkhand – 834001<br>
+                                India
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="flex items-center gap-3 group"
+                        >
+
+                            <i
+                                data-lucide="phone"
+                                class="w-5 h-5 text-cyan-400 shrink-0"
+                            ></i>
+
+                            <a
+                                href="tel:8102946105"
+                                class="hover:text-cyan-400 transition-colors group-hover:translate-x-1 duration-300 block"
+                            >
+                                8102946105
+                            </a>
+
+                        </div>
+
+
+                        <div
+                            class="flex items-center gap-3 group"
+                        >
+
+                            <i
+                                data-lucide="mail"
+                                class="w-5 h-5 text-cyan-400 shrink-0"
+                            ></i>
+
+                            <a
+                                href="mailto:genovarislifesciences@gmail.com"
+                                class="hover:text-cyan-400 transition-colors group-hover:translate-x-1 duration-300 block break-all"
+                            >
+                                genovarislifesciences@gmail.com
+                            </a>
+
+                        </div>
+
+                    </address>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40 font-light reveal"
+            >
+
+                <p>
+                    &copy;
+                    <span id="year"></span>
+                    Genovaris Lifesciences.
+                    All rights reserved.
+                </p>
+
+
+                <p
+                    class="text-center md:text-right max-w-lg"
+                >
+                    Disclaimer: Products are nutritional supplements and are not intended to diagnose, treat, cure, or prevent any disease. Always consult a healthcare professional.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- MAIN PAGE JAVASCRIPT -->
+
+    <script>
+
+        /*
+         * DYNAMIC YEAR
+         */
+
+        document.getElementById(
+            'year'
+        ).textContent =
+            new Date().getFullYear();
+
+
+        /*
+         * LUCIDE ICONS
+         */
+
+        lucide.createIcons();
+
+
+        /*
+         * HEADER
+         */
+
+        const header =
+            document.getElementById(
+                'main-header'
+            );
+
+
+        const mobileInlineNav =
+            document.getElementById(
+                'mobile-inline-nav'
+            );
+
+
+        window.addEventListener(
+            'scroll',
+            () => {
+
+                if (window.scrollY > 50) {
+
+                    header.classList.add(
+                        'glass-panel',
+                        'shadow-lg'
+                    );
+
+
+                    header.classList.remove(
+                        'bg-transparent',
+                        'border-transparent'
+                    );
+
+
+                    if (
+                        window.innerWidth < 1024
+                    ) {
+
+                        mobileInlineNav.classList.remove(
+                            'hidden'
+                        );
+
+
+                        setTimeout(
+                            () => {
+                                mobileInlineNav.style.opacity =
+                                    '1';
+                            },
+                            10
+                        );
+
+                    }
+
+                } else {
+
+                    header.classList.remove(
+                        'glass-panel',
+                        'shadow-lg'
+                    );
+
+
+                    header.classList.add(
+                        'bg-transparent',
+                        'border-transparent'
+                    );
+
+
+                    if (
+                        window.innerWidth < 1024
+                    ) {
+
+                        mobileInlineNav.style.opacity =
+                            '0';
+
+
+                        setTimeout(
+                            () => {
+                                mobileInlineNav.classList.add(
+                                    'hidden'
+                                );
+                            },
+                            200
+                        );
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /*
+         * SCROLLSPY
+         */
+
+        const sections =
+            document.querySelectorAll(
+                'section[id], footer[id], div[id^="product-"]'
+            );
+
+
+        const navLinks =
+            document.querySelectorAll(
+                '.scroll-link'
+            );
+
+
+        window.addEventListener(
+            'scroll',
+            () => {
+
+                let current = '';
+
+
+                sections.forEach(
+                    section => {
+
+                        const sectionTop =
+                            section.offsetTop;
+
+
+                        if (
+                            scrollY >=
+                            sectionTop - 120
+                        ) {
+
+                            current =
+                                section.getAttribute(
+                                    'id'
+                                );
+
+                        }
+
+                    }
+                );
+
+
+                navLinks.forEach(
+                    link => {
+
+                        link.classList.remove(
+                            'text-cyan-400',
+                            'active-link'
+                        );
+
+
+                        const href =
+                            link.getAttribute(
+                                'href'
+                            );
+
+
+                        if (
+                            !href ||
+                            !href.startsWith('#')
+                        ) {
+                            return;
+                        }
+
+
+                        const target =
+                            href.substring(1);
+
+
+                        if (
+                            target === current ||
+                            (
+                                current.startsWith(
+                                    'product-'
+                                ) &&
+                                target === 'products'
+                            )
+                        ) {
+
+                            link.classList.add(
+                                'text-cyan-400',
+                                'active-link'
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        /*
+         * MOBILE MENU
+         */
+
+        const mobileMenuBtn =
+            document.getElementById(
+                'mobile-menu-btn'
+            );
+
+
+        const closeMenuBtn =
+            document.getElementById(
+                'close-menu-btn'
+            );
+
+
+        const mobileMenuOverlay =
+            document.getElementById(
+                'mobile-menu-overlay'
+            );
+
+
+        const mobileLinks =
+            document.querySelectorAll(
+                '.mobile-link'
+            );
+
+
+        function toggleMenu(show) {
+
+            if (show) {
+
+                mobileMenuOverlay.classList.remove(
+                    'opacity-0',
+                    'pointer-events-none'
+                );
+
+
+                document.body.style.overflow =
+                    'hidden';
+
+            } else {
+
+                mobileMenuOverlay.classList.add(
+                    'opacity-0',
+                    'pointer-events-none'
+                );
+
+
+                document.body.style.overflow =
+                    '';
+
+            }
+
+        }
+
+
+        mobileMenuBtn.addEventListener(
+            'click',
+            () => toggleMenu(true)
+        );
+
+
+        closeMenuBtn.addEventListener(
+            'click',
+            () => toggleMenu(false)
+        );
+
+
+        mobileLinks.forEach(
+            link => {
+
+                link.addEventListener(
+                    'click',
+                    () => toggleMenu(false)
+                );
+
+            }
+        );
+
+
+        /*
+         * SCROLL REVEAL
+         */
+
+        const revealElements =
+            document.querySelectorAll(
+                '.reveal'
+            );
+
+
+        const revealObserver =
+            new IntersectionObserver(
+                entries => {
+
+                    entries.forEach(
+                        entry => {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                entry.target.classList.add(
+                                    'active'
+                                );
+
+
+                                revealObserver.unobserve(
+                                    entry.target
+                                );
+
+                            }
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: 0.15,
+                    rootMargin:
+                        '0px 0px -50px 0px'
+                }
+            );
+
+
+        revealElements.forEach(
+            el =>
+                revealObserver.observe(el)
+        );
+
+    </script>
+
+</body>
+</html>
